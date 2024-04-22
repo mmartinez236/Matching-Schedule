@@ -5,6 +5,7 @@ import java.util.Date;
 public class Evento {
     private Date dtstart;
     private Date dtend;
+    private String summary;
 
     public Date getDtstart() {
         return dtstart;
@@ -21,4 +22,12 @@ public class Evento {
     public void setDtend(Date dtend) {
         this.dtend = dtend;
     }
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 }

@@ -12,17 +12,12 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import dl.Calendario;
 import dl.Evento;
 
 public class Utils {
-	public static Calendario mapToCalendario(String jsonString) {
-		System.out.println("AITOOOOOOR");
+	public static List<Evento> mapToCalendario(String jsonString) {
 	    try (JsonReader reader = Json.createReader(new StringReader(jsonString))) {
 	        JsonObject jsonCalendario = reader.readObject();
-	        System.out.println("JSON completo: " + jsonCalendario.toString()); // Imprimir el JSON completo
-
-	        Calendario calendario = new Calendario();
 
 	        List<Evento> eventos = new ArrayList<>();
 	        JsonArray jsonEventos = jsonCalendario.getJsonArray("items");
@@ -31,11 +26,10 @@ public class Utils {
 	            Evento evento = new Evento();
 	            evento.setDtstart(parseDateTime(jsonEvento.getJsonObject("start").getString("dateTime")));
 	            evento.setDtend(parseDateTime(jsonEvento.getJsonObject("end").getString("dateTime")));
+	            evento.setSummary(jsonEvento.getString("summary"));
 	            eventos.add(evento);
-	            System.out.println("Evento añadido.");
 	        }
-	        calendario.setEventos(eventos);
-	        return calendario;
+	        return eventos;
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return null;
