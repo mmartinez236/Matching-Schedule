@@ -16,28 +16,31 @@ import dl.Calendario;
 import dl.Evento;
 
 public class Utils {
-    public static Calendario mapToCalendario(String jsonString) {
-        try (JsonReader reader = Json.createReader(new StringReader(jsonString))) {
-            JsonObject jsonCalendario = reader.readObject();
-            Calendario calendario = new Calendario();
+	public static Calendario mapToCalendario(String jsonString) {
+		System.out.println("AITOOOOOOR");
+	    try (JsonReader reader = Json.createReader(new StringReader(jsonString))) {
+	        JsonObject jsonCalendario = reader.readObject();
+	        System.out.println("JSON completo: " + jsonCalendario.toString()); // Imprimir el JSON completo
 
-            List<Evento> eventos = new ArrayList<>();
-            JsonArray jsonEventos = jsonCalendario.getJsonArray("items");
-            for (int i = 0; i < jsonEventos.size(); i++) {
-                JsonObject jsonEvento = jsonEventos.getJsonObject(i);
-                Evento evento = new Evento();
-                evento.setDtstart(parseDateTime(jsonEvento.getJsonObject("start").getString("dateTime")));
-                evento.setDtend(parseDateTime(jsonEvento.getJsonObject("end").getString("dateTime")));
-                eventos.add(evento);
-                System.out.println("Evento añadido.");
-            }
-            calendario.setEventos(eventos);
-            return calendario;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	        Calendario calendario = new Calendario();
+
+	        List<Evento> eventos = new ArrayList<>();
+	        JsonArray jsonEventos = jsonCalendario.getJsonArray("items");
+	        for (int i = 0; i < jsonEventos.size(); i++) {
+	            JsonObject jsonEvento = jsonEventos.getJsonObject(i);
+	            Evento evento = new Evento();
+	            evento.setDtstart(parseDateTime(jsonEvento.getJsonObject("start").getString("dateTime")));
+	            evento.setDtend(parseDateTime(jsonEvento.getJsonObject("end").getString("dateTime")));
+	            eventos.add(evento);
+	            System.out.println("Evento añadido.");
+	        }
+	        calendario.setEventos(eventos);
+	        return calendario;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
     
     public static Date parseDateTime(String dateTimeString) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
